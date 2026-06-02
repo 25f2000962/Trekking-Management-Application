@@ -5,7 +5,7 @@ db=SQLAlchemy()
 
 class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100),unique=True, nullable = False)
+    email = db.Column(db.String(100),unique=True, nullable = False)
     password=db.Column(db.String(200),nullable=False)
 
 class User(db.Model):
@@ -13,7 +13,7 @@ class User(db.Model):
     user_name = db.Column(db.String(100),nullable = False)
     email=db.Column(db.String(100),unique=True, nullable=False)
     password=db.Column(db.String(200),nullable=False)
-    phone = db.Column(db.String(15), nullable=False)
+    mobile = db.Column(db.String(15), nullable=False)
     is_blacklisted = db.Column(db.Boolean, default=False)
     created_at= db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -46,9 +46,10 @@ class Trek(db.Model):
     duration =db.Column(db.Integer)
     available_slots =db.Column(db.Integer, nullable=False)
     assigned_staff_id =db.Column(db.Integer,db.ForeignKey("staff.staff_id"),nullable=False)
-    status=db.Column(db.String(100),default="Open", nullable=False)
+    status=db.Column(db.String(100),default="Open")
     start_date=db.Column(db.DateTime)
     end_date=db.Column(db.DateTime)
+    payment_status = db.Column(db.String,default="Pending")
     is_closed = db.Column(db.Boolean, default=False)
     created_at =  db.Column(db.DateTime, default=datetime.utcnow)
     bookings = db.relationship("Booking", backref="trek")
