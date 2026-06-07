@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>View Staffs</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+             background: linear-gradient(
+        135deg,
+        #fce7f3,
+        #ede9fe,
+        #dbeafe)
+        }
+
+        .navbar {
+            background-color: #212529;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .card {
+            border-radius: 10px;
+        }
+        .alert {
+    animation: fadeOut 5s forwards;
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<!-- 🔹 NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+        <a class="navbar-brand">Admin Panel</a>
+
+        <div ms-auto>
+        <a href="/admin_dashboard" class="btn btn-light me-2">Dashboard</a>
+        <!-- LOGOUT -->
+        <a href="/" class="btn btn-danger ms-3">Logout</a>
+            </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- 🔹 FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+   <h2 class="mb-4 text-center">Manage Staff</h2>
+   <form class="d-flex justify-content-center mt-4" method="GET">
+    <input
+        class="form-control w-50 rounded-pill shadow"
+        type="search"
+        name="search"
+        value="{{ search }}"
+        placeholder="🔍 Search guides"
+    >
+</form>
+
+<br>
+<br>
+<br>
+{% if search %}
+<div class="text-center mt-3">
+    <a href="/admin/staff" class="btn btn-secondary">
+        Back to All Staffs
+    </a>
+</div>
+{% endif %}
+
+{% if search %}
+<h2 class="mb-4">Search Results for "{{ search }}"</h2>
+{% else %}
+<div class="card border-0 rounded-4 text-white p-4"
+     style="background: linear-gradient(135deg,#43cea2,#185a9d);">
+    
+    <h3> Create New Staff</h3>
+    <p>Add a new staff to the platform.</p>
+
+    <a href="/admin/staff/create_staff"
+       class="btn btn-light">
+        Create Staff
+    </a>
+</div>
+<br>
+<br>
+<h2 class="mb-4">Available Staffs</h2>
+{% endif %}
+
+<br>
+
+    <div class="row">
+
+        {% for s in staff %}
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow p-3">
+
+                <h5>{{ s.staff_name }}</h5>
+
+                <p><strong>ID:</strong> {{ s.staff_id }}</p>
+                <p><strong>Email:</strong> {{ s.email }}</p>
+                <p><strong>Status:</strong> {{ s.status }}</p>
+
+            
+                {% if s.is_blacklisted %}
+                    <span class="badge bg-danger">Blacklisted</span>
+                
+                {% else %}
+                    <span class="badge bg-success">Added</span>
+                {% endif %}
+                <br>
+            
+
+
+                <div class="d-flex justify-content-center gap-4">
+
+                   
+
+                    <a href="/admin/staff/remove/{{ s.staff_id }}" class="btn btn-danger btn-sm">
+                        Remove
+                    </a>
+                    
+                {% if s.is_blacklisted  %}
+
+                    <a href="/admin/staff/approve/{{ s.staff_id }}" class="btn btn-secondary btn-success">
+                        Approve
+                    </a>
+                
+                
+                {% else %}
+                
+                    <a href="/admin/staff/blacklist/{{ s.staff_id }}" class="btn btn-secondary btn-danger">
+                        Blacklist
+                    </a>
+                
+                
+                {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

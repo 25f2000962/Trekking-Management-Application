@@ -16,7 +16,7 @@ class User(db.Model):
     mobile = db.Column(db.String(15), nullable=False)
     is_blacklisted = db.Column(db.Boolean, default=False)
     created_at= db.Column(db.DateTime, default=datetime.utcnow)
-
+    status=db.Column(db.String,default="Approved" )
     bookings = db.relationship("Booking", backref="user")
 
 class Staff(db.Model):
@@ -45,7 +45,7 @@ class Trek(db.Model):
     difficulty = db.Column(db.String,nullable = False)
     duration =db.Column(db.Integer)
     available_slots =db.Column(db.Integer, nullable=False)
-    assigned_staff_id =db.Column(db.Integer,db.ForeignKey("staff.staff_id"),nullable=False)
+    assigned_staff_id =db.Column(db.Integer,db.ForeignKey("staff.staff_id"), nullable=True)
     status=db.Column(db.String(100),default="Open")
     start_date=db.Column(db.DateTime)
     end_date=db.Column(db.DateTime)

@@ -34,7 +34,8 @@
      
 <div class="container mt-5">
     <h1 class="text-center  fw-bold">
-        Let's get started!
+        Let's get started!,<br>
+        {{ user.user_name }}
     </h1>
     <br>
     <br>
@@ -63,6 +64,9 @@
                     <p><strong>location</strong> {{ trek.location if trek.location else "N/A" }}</p>
                     <p><strong>Difficulty</strong> {{ trek.difficulty }}</p>
                     <p><strong>Duration</strong>{{ trek.duration if trek.duration else 'Not set' }} days</p>
+                    <button type="submit" class="btn btn-primary w-100">
+            Learn more!
+        </button>
             </div>
             </div>
             </div>

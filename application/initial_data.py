@@ -23,10 +23,12 @@ with app.app_context():
     
     
     if not db.session.query(Staff).first():
+        print("Creating staff...")
         staff1=Staff(staff_name="sam",email="sam@g.com",password="pass")
         staff2=Staff(staff_name="ran",email="ran@g.com",password="pass")
         db.session.add_all([staff1,staff2])
         db.session.commit()
+        print("Created staff...")
 
     
     if not db.session.query(Trek).first():
