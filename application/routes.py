@@ -1,6 +1,6 @@
 from app import app
 from .model import db, Admin,User,Staff,Trek,Booking
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session,url_for
 from sqlalchemy import or_
 
 @app.route("/")
@@ -97,7 +97,6 @@ def user_dashboard():
         treks=treks
     )
 
-
 @app.route("/staff_dashboard")
 def staff_dashboard():
 
@@ -108,12 +107,18 @@ def staff_dashboard():
 
     staff = Staff.query.get(staff_id)
 
-    treks = Trek.query.all()
+    treks = Trek.query.filter_by(assigned_staff_id=staff_id).all()
+    trek_count = len(treks)
+    trekker_count = 0
 
+    for trek in treks:
+        trekker_count += len(trek.bookings)
     return render_template(
         "staff/staff_dashboard.html",
         staff=staff,
-        treks=treks
+        treks=treks,
+        trek_count=trek_count,
+        trekker_count=trekker_count
     )
 
 
@@ -352,4 +357,99 @@ def admin_bookings():
         bookings=bookings
     )
 
+
+@app.route("/staff/my_treks")
+def my_treks():
+
     
+    staff_id = session.get("user_id")
+
+    
+    staff = Staff.query.get(staff_id)
+
+    treks = Trek.query.filter_by(assigned_staff_id=staff_id).all()
+    
+    return render_template(
+        "staff/my_treks.html",
+        staff=staff,
+        treks=treks,
+    )
+
+
+@app.route("/staff/trek/<int:trek_id>")
+def view_trek(trek_id):
+
+    staff_id = session.get("user_id")
+
+    if not staff_id:
+        return redirect("/login")
+
+    trek = Trek.query.get_or_404(trek_id)
+
+    # Security check: guide can only view their own treks
+    if trek.assigned_staff_id != staff_id:
+        return "Unauthorized", 403
+
+    return render_template(
+        "staff/view_trek.html",
+        trek=trek,
+        
+    )
+
+@app.route("/staff/remove_participant/<int:booking_id>",
+           methods=["POST"])
+def remove_participant(booking_id):
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    trek_id = booking.trek_id
+
+    db.session.delete(booking)
+    db.session.commit()
+
+    return redirect("staff/view_trek.html", id=trek_id)
+    
+
+
+@app.route("/staff/trek/<int:id>/booking_status", methods=["POST"])
+def change_booking_status(id):
+
+    trek = Trek.query.get_or_404(id)
+
+    trek.booking_status = request.form.get("status")
+
+    db.session.commit()
+
+    return redirect(url_for("view_trek", trek_id=id))
+
+
+@app.route("/staff/trek/<int:id>/slots", methods=["GET","POST"])
+def update_slots(id):
+
+    trek = Trek.query.get_or_404(id)
+
+    if request.method == "POST":
+        trek.available_slots = request.form.get("slots")
+        db.session.commit()
+
+        
+        return redirect(url_for("view_trek", trek_id=id))
+
+    return render_template(
+        "staff/update_slots.html",
+        trek=trek
+    )
+
+@app.route("/staff/trek/<int:id>/status", methods=["POST"])
+def change_trek_status(id):
+
+    trek = Trek.query.get_or_404(id)
+
+    if trek.assigned_staff_id != session.get("user_id"):
+        return "Unauthorized", 403
+
+    trek.trek_status = request.form.get("status")
+
+    db.session.commit()
+
+    return redirect(url_for("view_trek", trek_id=id))
