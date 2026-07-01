@@ -16,7 +16,7 @@
     <a class="navbar-brand fw-bold">TrekVista</a>
 
     <div class="ms-auto">
-        <a href="{{ url_for('home') }}" class="btn btn-outline-light">
+        <a href="{{ url_for('home') }}" class="btn text-white">
             Back
         </a>
     </div>
@@ -24,38 +24,39 @@
 </nav>
     <div class="container-fluid d-flex justify-content-center align-items-center"
     style="
-    height:100vh;
+    height:calc(100vh - 56px);
     background-image:url('/static/images/register_bg2.avif');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
 ">
      
-<div class="container mt-5">
+<div class="container-fluid mt-3">
 
-    <div class="card shadow p-5 mx-auto" style="max-width: 400px;">
+    <div class="card shadow p-4 mx-auto" style="max-width: 400px;">
 
-        <h3 class="text-center ">Your Adventure Starts Here</h3>
-
+        <h4 class="text-center ">Your Adventure Starts Here</h4>
+        <br>
+        
         <form method="POST">
-
             
-            <div class="form-floating mb-3">
-                <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+            
+            <div class="form-floating mb-2">
+                <input type="text" name="name" class="form-control" placeholder="full name" required>
                 <label>Full Name</label>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-2">
                 <input type="email" name="email" class="form-control" placeholder="email" required>
                 <label>Email</label>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-2">
                 <input type="text" name="phone" class="form-control" placeholder="phone" required>
                 <label>Mobile</label>
             </div>
 
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-2">
                 <input type="password" name="password" class="form-control" placeholder="password" required>
                 <label>Password</label>
             </div>

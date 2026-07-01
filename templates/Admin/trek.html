@@ -17,34 +17,11 @@
         #dbeafe)
         }
 
-        .navbar {
-            background-color: #212529;
-        }
-
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
-
+        
         .card {
             border-radius: 10px;
         }
-        
-.alert {
-    animation: fadeOut 5s ease forwards;
-}
 
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    80% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
 
     </style>
 </head>
@@ -52,36 +29,26 @@
 <body>
 
 <!-- 🔹 NAVBAR -->
-<nav class="navbar bg-dark navbar-expand-lg">
+<nav class="navbar bg-dark navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 
-        <a class="navbar-brand">Admin Panel</a>
+        <a class="navbar-brand">TrekVista</a>
 
         <div ms-auto>
-        <a href="/admin_dashboard" class="btn btn-light me-2">Dashboard</a>
-        <!-- LOGOUT -->
-        <a href="/" class="btn btn-danger ms-3">Logout</a>
+        <a href="/admin_dashboard" class="btn text-white me-2">Back</a>
+        
             </div>
     </div>
 </nav>
 
 <div class="container mt-4">
 
-    <!-- 🔹 FLASH MESSAGES -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
 
-    <h2 class="mb-4 text-center">Manage Treks</h2>
+    <h2 class="mb-4 text-center"> Treks Management</h2>
+    <h5 class="text-center">Create, update, and manage trekking routes, destinations, schedules, and trek details.</h5>
           <form class="d-flex justify-content-center mt-4" method="GET">
     <input
-        class="form-control w-50 rounded-pill shadow"
+        class="form-control w-100 rounded-pill shadow"
         type="search"
         name="search"
         value="{{ search }}"
@@ -115,10 +82,9 @@
 </div>
 <br>
 <br>
-<h2 class="mb-4">Available Treks</h2>
+<h2 class="mb-4">Registered Treks</h2>
 {% endif %}
 
-<br>
 <br>
 
 

@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <style>
+        body {
+             background: linear-gradient(
+        135deg,
+        #fce7f3,
+        #ede9fe,
+        #dbeafe);}
+</style>
 </head>
 <body>
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
     
     <a class="navbar-brand fw-bold">TrekVista</a>
         <div class="ms-auto">
-        <a href="" class="btn text-white btn-outline-light">
-            history
+        <a href="/user/bookings" class="btn text-white">
+            History
         </a>
-        <a href="" class="btn btn-outline-light">
+        <a href="/user/edit_profile/{{ user.user_id}}" class="btn text-white">
             Edit Profile
         </a>
     </div>
@@ -26,7 +34,7 @@
     <div class="container-fluid d-flex justify-content-center align-items-center"
     style="
     height: 350px;;
-    background-image:url('/static/images/Screenshot\ 2026-06-02\ 162819.png');
+    background-image:url('/static/images/user_dashboard.jpg');
     background-size:cover;
     background-position:top center;
     background-repeat:no-repeat;
@@ -41,38 +49,99 @@
     <br>
     <br>
     <br>
-    <form class="d-flex justify-content-center mt-4">
-    <input
-        class="form-control w-70 rounded-pill shadow"
-        type="search"
-        placeholder="🔍 Search destinations..."
-    >
+    <form method="GET" action="{{ url_for('user_dashboard') }}"
+      class="d-flex justify-content-center gap-2 mt-4">
+
+    <select name="location" class="form-select w-25">
+        <option value="">All Locations</option>
+
+        {% for loc in locations %}
+        <option value="{{ loc[0] }}"
+            {% if location == loc[0] %}selected{% endif %}>
+            {{ loc[0] }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <select name="difficulty" class="form-select w-25">
+    <option value="">All Difficulties</option>
+    <option value="Easy" {% if difficulty == "Easy" %}selected{% endif %}>Easy</option>
+    <option value="Moderate" {% if difficulty == "Moderate" %}selected{% endif %}>Moderate</option>
+    <option value="Hard" {% if difficulty == "Hard" %}selected{% endif %}>Hard</option>
+</select>
+
+    <button type="submit" clAQass="btn btn-primary">
+        Search
+    </button>
+
 </form>
 </div>
 </div>
-<div class="container mt-5">
+<br>
+{% if location or trek_date %}
+<div class="text-center mt-3">
+    <a href="{{ url_for('user_dashboard') }}"
+       class="btn btn-secondary">
+        Back to All Treks
+    </a>
+</div>
+{% endif %}
 
-    <h3 class="mb-4 text-center">Available Treks</h3>
+{% if location or trek_date %}
+<h2 class="mb-4 text-center">
+    Search Results
+</h2>
+{% else %}
+<h2 class="mb-4 text-center">
+    AVAILABLE TREKS
+</h2>
+{% endif %}
+
+<br>
+<br>
+
 
     <div class="row">
+        {%if treks %}
+        {% for trek in treks  %}
+        <div class="col-md-4 mb-4">
 
-        {% for trek in treks %}
-        <div class="col-md-6 mb-4">
-            <div class="card shadow h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ trek.trek_name }}</h5>
-                    <p><strong>location</strong> {{ trek.location if trek.location else "N/A" }}</p>
-                    <p><strong>Difficulty</strong> {{ trek.difficulty }}</p>
-                    <p><strong>Duration</strong>{{ trek.duration if trek.duration else 'Not set' }} days</p>
-                    <button type="submit" class="btn btn-primary w-100">
-            Learn more!
-        </button>
-            </div>
-            </div>
-            </div>
-        {%endfor%}
+            <div class="card shadow p-3 text-center">
+                
+              <h5 class="card-title text-capitalize text-center">{{ trek.trek_name }}</h5>
+              <hr>
+                    <p><strong>location: </strong> {{ trek.location if trek.location else "N/A" }}</p>
+                    <p><strong>Difficulty: </strong> {{ trek.difficulty }}</p>
+                    <p><strong>Duration: </strong>{{ trek.duration if trek.duration else 'Not set' }} days</p>
+                    <p><strong>Available slots: </strong>{{ trek.available_slots if trek.available_slots else 'Not set' }}</p>
+                    <p><strong>Assigned guide:  </strong>{{ trek.staff.staff_name if trek.staff else "Not Assigned" }}</p>
                     
+                    {% if trek.trek_id in applied %}
+    <button class="btn btn-secondary w-100" disabled>
+        Already Booked
+    </button>
+{% else %}
+    <form action="/user/apply/{{ trek.trek_id }}" method="POST">
+        <button type="submit" class="btn btn-primary w-100">
+            BOOK
+        </button>
+    </form>
+{% endif %}
+                </div>
+            </div>
 
+       
+
+        
+        {% endfor %}
+{% else %}
+<h1 class="text-center fw-bold">Nothing To See Here</h1>
+
+
+{% endif %}
+    </div>
+
+</div>
 
 </body>
 </html>

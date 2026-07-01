@@ -35,6 +35,16 @@
 
     <div class="card shadow p-5 mx-auto" style="max-width: 400px;">
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} text-center">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
         <h3 class="text-center ">Welcome back.<br>
 
             Log in and start exploring.</h3>

@@ -14,15 +14,14 @@
     
 
 
-<nav class="navbar bg-dark  navbar-expand-lg">
+<nav class="navbar bg-dark  navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 
         <a class="navbar-brand text-white">TrekVista</a>
         <div ms-auto>
-        <a class="btn btn-outline-light ms-3" href="/admin_dashboard">Dashboard</a>
+        <a class="btn text-white ms-3" href="/admin_dashboard">Back</a>
 
-        <!-- LOGOUT -->
-        <a href="/" class="btn btn-outline-light ms-3">Logout</a>
+        
             </div>
     </div>
 </nav>
@@ -52,21 +51,21 @@
 
                 <div class="mb-3">
                     <label class="form-label">location</label>
-                    <input name="location" class="form-control" rows="3" required>
+                    <input name="location" class="form-control" rows="3" placeholder="Enter Trek name"  required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">difficulty</label>
-                    <input type="text" name="difficulty" class="form-control" required>
+                    <input type="text" name="difficulty" class="form-control" placeholder="Enter dificulty"  required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">duration</label>
-                    <input type="int" name="duration" class="form-control" required>
+                    <input type="int" name="duration" class="form-control" placeholder="Enter duration"  required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">available_slots</label>
+                    <label class="form-label">Available slots</label>
                     <input type="int" name="available_slots" class="form-control" placeholder="Number of available slots">
                 </div>
                 <div>

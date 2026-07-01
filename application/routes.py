@@ -1,6 +1,6 @@
 from app import app
 from .model import db, Admin,User,Staff,Trek,Booking
-from flask import render_template, request, redirect, session,url_for
+from flask import render_template, request, redirect, session,url_for,flash
 from sqlalchemy import or_
 
 @app.route("/")
@@ -22,6 +22,7 @@ def register():
         existing_user = User.query.filter_by(email=email).first()
 
         if existing_user: 
+            flash("You are already registered! Please login.", "warning")
             return redirect("/login")
     
         user = User(user_name=user_name, email=email, password=password, mobile=phone)
@@ -42,6 +43,9 @@ def login():
 
         if not user or user.password != password:
             return redirect("/login")
+        if user.is_blacklisted:
+             flash("You are blacklisted")
+             return redirect("/login")
         session["user_id"] = user.user_id
         return redirect("/user_dashboard")
 
@@ -56,7 +60,8 @@ def admin_login():
         admin = Admin.query.filter_by(email=email).first()
 
         if not admin or admin.password != password:
-            return redirect("/login")
+            flash("Wrong credentials","warning ")
+            return redirect("/admin_login")
         session["user_id"] = admin.id
         
         
@@ -79,6 +84,8 @@ def staff_login():
         
         return redirect("/staff_dashboard")
 
+from datetime import datetime
+
 @app.route("/user_dashboard")
 def user_dashboard():
 
@@ -87,14 +94,44 @@ def user_dashboard():
     if not user_id:
         return redirect("/login")
 
+    location = request.args.get("location", "")
+    difficulty = request.args.get("difficulty", "")
+
+    query = Trek.query.filter(
+        Trek.available_slots > 0,
+        Trek.booking_status == "Open",
+        Trek.is_closed == False
+    )
+                            
+    if location:
+        query = query.filter(
+            Trek.location.ilike(f"%{location}%")
+        )
+
+    if difficulty:
+        query = query.filter(
+            Trek.difficulty == difficulty
+        )
+
+    treks = query.all()
+
     user = User.query.get(user_id)
 
-    treks = Trek.query.all()
+    applied = {
+        a.trek_id
+        for a in Booking.query.filter_by(user_id=user_id).all()
+    }
+
+    locations = db.session.query(Trek.location).distinct().all()
 
     return render_template(
         "user/user_dashboard.html",
         user=user,
-        treks=treks
+        treks=treks,
+        locations=locations,
+        location=location,
+        difficulty=difficulty,
+        applied=applied
     )
 
 @app.route("/staff_dashboard")
@@ -189,6 +226,7 @@ def blacklist_staff(id):
     staff = Staff.query.get(id)
 
     staff.is_blacklisted = True
+    staff.status = "Blacklisted"
     db.session.commit()
 
     
@@ -228,10 +266,7 @@ def create_staff():
             
             return redirect("/admin/staff/create_staff")
         
-        existing_user = User.query.filter_by(email=email).first()
-
-        if existing_user: 
-            return redirect("/login")
+       
     
         staff = Staff(staff_name=name, email=email, password=password, contact_details=contact_details)
         db.session.add(staff)
@@ -299,9 +334,8 @@ def create_trek():
         staff_id = request.form.get("staff_id")
         trek = Trek.query.filter_by(trek_name=name).first()
         if trek:
+            flash("Trek already registered")
             return redirect("/admin/trek/create_trek")
-        
-        
     
         trek = Trek( trek_name=name,
     location=location,
@@ -340,6 +374,10 @@ def edit_trek(id):
 @app.route("/admin/trek/remove/<int:id>")
 def remove_trek(id):
     trek = Trek.query.get(id)
+    bookings = Booking.query.filter_by(trek_id=id).all()
+
+    for b in bookings:
+        db.session.delete(b)
     db.session.delete(trek)
     db.session.commit()
     return redirect("/admin/treks")
@@ -358,7 +396,7 @@ def admin_bookings():
     )
 
 
-@app.route("/staff/my_treks")
+@app.route("/staff/my_treks/")
 def my_treks():
 
     
@@ -407,8 +445,25 @@ def remove_participant(booking_id):
     db.session.delete(booking)
     db.session.commit()
 
-    return redirect("staff/view_trek.html", id=trek_id)
+    return redirect(url_for("view_trek", trek_id=trek_id))
     
+@app.route("/staff/edit_staff/",methods=["Get","Post"])
+def edit_staff():
+    staff_id = session.get("user_id")
+    staff=Staff.query.get(staff_id)
+
+    if request.method == "POST":
+        staff.staff_name = request.form.get("staff_name")
+        staff.contact_details=request.form.get("phone")
+        staff.email= request.form.get("email")
+        
+    
+        db.session.commit()
+
+        return redirect("/staff_dashboard")
+    
+    return render_template("staff/edit_staff.html", staff=staff)
+
 
 
 @app.route("/staff/trek/<int:id>/booking_status", methods=["POST"])
@@ -453,3 +508,72 @@ def change_trek_status(id):
     db.session.commit()
 
     return redirect(url_for("view_trek", trek_id=id))
+
+
+
+@app.route("/user/apply/<int:trek_id>", methods=["POST"])
+def apply_trek(trek_id):
+
+    
+    user_id = session.get("user_id")
+
+    existing = Booking.query.filter_by(
+        trek_id=trek_id,
+        user_id=user_id
+    ).first()
+
+
+    booking = Booking(
+        trek_id=trek_id,
+        user_id=user_id
+        )
+
+    db.session.add(booking)
+    db.session.commit()
+
+       
+
+    return redirect("/user_dashboard")
+
+
+@app.route("/user/edit_profile/<int:id>", methods=["GET", "POST"])
+def edit_profile(id):
+
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return redirect("/login")
+
+    if user_id != id:
+        return "Unauthorized", 403
+
+    user = User.query.get_or_404(id)
+
+    if request.method == "POST":
+        user.user_name = request.form.get("user_name")
+        user.email = request.form.get("email")
+        user.mobile = request.form.get("mobile")
+
+        db.session.commit()
+
+        return redirect("/user_dashboard")
+
+    return render_template(
+        "user/edit_profile.html",
+        user=user
+    )
+
+
+@app.route("/user/bookings")
+def user_bookings():
+
+    user_id = session.get("user_id")
+
+    bookings = Booking.query.filter_by(
+        user_id=user_id
+    ).all()
+
+    return render_template(
+        "user/history.html",
+        bookings=bookings
+    )

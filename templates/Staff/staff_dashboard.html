@@ -23,78 +23,141 @@
     height: calc(100vh - 85px);
 }
 </style>
-</head>
-
-<body>
+<body class="bg-light">
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
     
     <a class="navbar-brand fw-bold">TrekVista</a>
-        <a href="/"
-       class="ms-auto btn btn-light">
-     Logout
-    </a>
+
+    <div class="ms-auto">
+        <a href="{{ url_for('home') }}" class="btn text-white">
+            Back
+        </a>
+    </div>
 
 </nav>
-<div class="container-fluid">
-    <div class="row align-items-stretch">
+
+
+<div class="container-fluid py-3">
+
+    <div class="row">
+
         <!-- Sidebar -->
-        <div class="col-md-3 p-2 d-flex">
-            <div class="bg-white shadow rounded-4 p-4 sidebar-card">
+        <div class="col-lg-3 mb-3">
 
-                <h2 class="text-center mb-5">Dashboard</h2>
-                <p class="text-center"><b>YOUR TREKKING COMMAND CENTER</b></p>
-                <br><p class="text-center">
-                You have been added by the admin.
-            <br>
-        Navigate. Explore. Lead.</p>
-                <hr>
-                <br>
-                <br>
-                <div class="d-grid gap-3">
+            <div class="card border-0 shadow-lg rounded-4 ">
+
+                <div class="card-body p-4">
+
+                    <div class="text-center">
+
+                        
+                        <h2 class="fw-bold mt-2">
+                            Dashboard
+                        </h2>
+
+                        <p class="text-muted">
+                            Your Trekking Command Center
+                        </p>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="alert alert-success rounded-4 text-center mt-3">
+
+                        <strong>Welcome!</strong>
+
+                        <br>
+
+                        You have been assigned by the admin.
+                        <br>
+                        Manage your treks here <br>
+                        with ease.
+
+                    </div>
+                    <br>
+                    <br>
+
+
+                    <div class="d-grid gap-3">
+
                     
-                    <div class="card border-0 rounded-4 shadow-lg overflow-hidden trek-card">
-    <a href="/staff/my_treks"
-       class="text-decoration-none text-white">
-       
-        <div class="p-4 text-center"
-             style="background: linear-gradient(135deg,#43cea2,#185a9d);">
 
-            <div class="fs-1 mb-2">
-                <i class="bi bi-compass-fill"></i>
-            </div>
+                        <a href="/staff/my_treks/"
+                           class="text-decoration-none">
 
-            <h4 class="fw-bold mb-1">My Treks</h4>
+                            <div class="card border-0 shadow rounded-4 trek-card">
 
-            <p class="mb-0">
-                All your treks at one place.
-                View trek information, manage trekkers, and stay adventure-ready.
-                
-            </p>
+                                <div class="card-body text-center text-white"
+                                     style="background:linear-gradient(135deg,#00b09b,#96c93d);">
 
-        </div>
-    </a>
-</div>
+                                    <h5 class="fw-bold mt-3">
+                                        My Treks
+                                    </h5>
 
+                                </div>
 
+                            </div>
 
-                    
-                    
+                        </a>
+                        
+                    <br>
+
+                        <!-- Edit Profile -->
+
+                        <a href="/staff/edit_staff/"
+                           class="text-decoration-none">
+
+                            <div class="card border-0 shadow rounded-4 trek-card">
+
+                                <div class="card-body text-center text-white"
+                                     style="background:linear-gradient(135deg,#00b09b,#96c93d);">
+
+                                    
+
+                                    <h5 class="fw-bold mt-3">
+                                        Edit Profile
+                                    </h5>
+                                    
+                                </div>
+
+                            </div>
+                                <br>
+                                
+                        </a>
+
+                    </div>
+
                 </div>
 
             </div>
+
         </div>
+
+
+
 
         <!-- Main Content -->
         <div class="col-md-9 p-2">
+            <div class="container-fluid d-flex justify-content-center align-items-center"
+    style="
+    height:250px;
+    background-image:url('/static/images/view_drive.webp');
+    background-position:center;
+    background-repeat:no-repeat;
+">
+     <div class="p-3 text-center text-white fw-bold">
 
             <!-- Hero Section -->
-            <div class="bg-white rounded-4 shadow p-5 mb-4">
-                <h1>Hello, {{ staff.staff_name }} 👋</h1>
-                <p class="lead">
+        
+                <h2 class="text-center fw-bold">Welcome, {{ staff.staff_name }} 👋</h2>
+                <br>
+                <h4 class="text-center fw-bold">
                     Ready for your next adventure?<br>
                     Stay organized, monitor your assigned treks, and lead every journey with confidence.
                     
-                </p>
+                </h4>
+            </div>
             </div>
             <div class=" container-fluid mt-4">
     <div class="row text-center mb-5">
@@ -117,7 +180,7 @@
     
 
         <div class="col-md-6">
-            <div class="card shadow p-3 h-100">
+            <div class="card shadow p-4 h-100">
                 <img src="{{ url_for('static', filename='images/booking2.png') }}"
      class="card-img-top"
      style="height:120px; object-fit:contain;">
@@ -128,11 +191,6 @@
                 
 </div>
     </div>
-
-
-
-
-   
 
             </div>
 

@@ -14,15 +14,14 @@
     
 
 
-<nav class="navbar bg-dark  navbar-expand-lg">
+<nav class="navbar bg-dark  navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 
         <a class="navbar-brand text-white">TrekVista</a>
         <div ms-auto>
-        <a class="btn btn-outline-light ms-3" href="/admin_dashboard">Dashboard</a>
+        <a class="btn btn-outline-light ms-3" href="/admin/treks">Back</a>
 
-        <!-- LOGOUT -->
-        <a href="/" class="btn btn-outline-light ms-3">Logout</a>
+
             </div>
     </div>
 </nav>
@@ -66,7 +65,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">available_slots</label>
+                    <label class="form-label">Available slots</label>
                     <input type="int" name="available_slots" class="form-control" value="{{ trek.available_slots }}">
                 </div>
                 

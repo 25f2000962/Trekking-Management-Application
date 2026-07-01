@@ -10,42 +10,11 @@
 
     <style>
         body {
-            background: #F7F9F6
+            background: linear-gradient(135deg, #ffffff, #ffd6e7);
+            overflow:hidden;
+
         };
-        
 
-        .navbar {
-            background-color: #212529;
-        }
-
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
-
-        .card {
-            border-radius: 10px;
-        }
-        .card {
-    height: 100%;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-}
-
-.card-body .btn {
-    margin-top: auto;
-}
-.alert {
-    animation: fadeOut 5s forwards;
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; display: none; }
-}
 
     </style>
 </head>
@@ -53,15 +22,13 @@
 <body>
 
 <!-- 🔹 NAVBAR -->
-<nav class="navbar bg-dark  navbar-expand-lg">
+<nav class="navbar bg-dark  navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 
         <a class="navbar-brand">TrekVista</a>
 
-      
-
         <!-- LOGOUT -->
-        <a href="/" class="btn btn-outline-light ms-3">Logout</a>
+        <a href="/" class="btn text-white ms-3">Logout</a>
 
     </div>
 </nav>
@@ -81,25 +48,46 @@
     {% endwith %}
 
     
+<br>
 
-    <div class="container-fluid d-flex justify-content-center align-items-center"
+
+    <div class="container-fluid d-flex justify-content-center align-items-center p-5"
     style="
     height: 248px;
-    
-    background-image:url('/static/images/WhatsApp\ Image\ 2026-06-04\ at\ 2.53.31\ AM.jpeg');
+    width: 1500px;
+    border-radius: 25px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image:url('/static/images/user_dashboard.jpg');
 
-
-">
    
+">
+<div class="p-3 text-center"
+         style="
+            width:800px;
+            max-height:200px;
+            background:rgba(255,255,255,0.15);
+            backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.3);
+            border-radius:25px;
+            color:white;
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+         ">
+    <h1>
+       
+    Welcome Back, Administrator</h1>
+    <h6>Everything you need to manage treks, users, bookings, and platform operations—all in one place.</h6>
+   
+</div>
 </div>
 <br>
 
-<br>
 <div class=" container-fluid mt-4">
     <div class="row text-center mb-5">
 
        <div class="col-md-3">
-    <div class="card shadow p-3 h-100">
+    <div class="card shadow p-3 h-80">
         <img src="{{ url_for('static', filename='images/Screenshot 2026-06-04 022447.png') }}"
              class="card-img-top"
              style="height:120px; object-fit:contain;">
@@ -117,7 +105,7 @@
     </div>
 </div>
 <div class="col-md-3">
-    <div class="card shadow p-3 h-100">
+    <div class="card shadow p-3 h-80">
         <img src="{{ url_for('static', filename='images/guide.png') }}"
              class="card-img-top"
              style="height:120px; object-fit:contain;">
@@ -126,16 +114,16 @@
         <div class="card-body text-center">
             <h4>{{ staff }}</h4>
             <h4>Total staffs</h4>
-            <p>Add or remove trek guides and assign them treks</p>
+            <p>Manage trek guides and assign treks</p>
 
             <a href="/admin/staff" class="btn btn-primary">
-                View Staff
+                View Staffs
             </a>
         </div>
     </div>
 </div>
         <div class="col-md-3">
-            <div class="card shadow p-3 h-100">
+            <div class="card shadow p-3 h-80">
                 <img src="{{ url_for('static', filename='images/mountain.png') }}"
      class="card-img-top"
      style="height:120px; object-fit:contain;">
@@ -154,7 +142,7 @@
     
 
         <div class="col-md-3">
-            <div class="card shadow p-3 h-100">
+            <div class="card shadow p-3 h-80">
                 <img src="{{ url_for('static', filename='images/booking2.png') }}"
      class="card-img-top"
      style="height:120px; object-fit:contain;">

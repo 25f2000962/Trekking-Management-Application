@@ -17,30 +17,7 @@
         #ede9fe,
         #dbeafe)
         }
-        .navbar {
-            background-color: #212529;
-        }
-
-        .navbar-brand {
-            color: white !important;
-        }
         
-.alert {
-    animation: fadeOut 5s ease forwards;
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    80% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
 
     </style>
 </head>
@@ -48,7 +25,7 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-dark ">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" text-white>TrekVista</a>
 
@@ -197,8 +174,7 @@
             <td>{{ booking.booking_date.strftime('%d-%m-%Y') }}</td>
             <td>
                 <form method="POST"
-      action="{{ url_for('remove_participant',
-                         booking_id=booking.booking_id) }}">
+      action="/staff/remove_participant/{{booking.booking_id }}">
     <button class="btn btn-danger btn-sm">
         Remove
     </button>

@@ -13,7 +13,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
     
-    <a class="navbar-brand fw-bold">TrekVista</a>
+    <a href="/" class="navbar-brand fw-bold">TrekVista</a>
         <div class="ms-auto">
         <a href="/admin_login" class="btn text-white">
             Admin
@@ -21,14 +21,14 @@
 
 
     
-        <a href="/staff_login "class="btn text-white">
+        <a href="/staff_login"class="btn text-white">
             Trek Guide
         </a>
     
 
 
     
-        <a href="{{ url_for('login') }}" class="btn btn-outline-light">
+        <a href="{{ url_for('login') }}" class="btn text-white">
             Login
         </a>
     </div>
@@ -36,7 +36,7 @@
 </nav>
     <div class="container-fluid d-flex justify-content-center align-items-center"
     style="
-    height:100vh;
+    height:calc(100vh - 56px);
     background-image:url('/static/images/bgg.jpg');
     background-size:cover;
     background-position:center;

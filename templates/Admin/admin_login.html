@@ -16,7 +16,7 @@
     <a class="navbar-brand fw-bold">TrekVista</a>
 
     <div class="ms-auto">
-        <a href="{{ url_for('home') }}" class="btn btn-outline-light">
+        <a href="{{ url_for('home') }}" class="btn text-white">
             Back
         </a>
     </div>
@@ -24,16 +24,25 @@
 </nav>
     <div class="container-fluid d-flex justify-content-center align-items-center"
     style="
-    height:100vh;
+    height:673px;
     background-image:url('/static/images/login_bg.webp');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
 ">
      
-<div class="container mt-5">
+<div class="container mt-4">
 
-    <div class="card shadow p-5 mx-auto" style="max-width: 400px;">
+    <div class="card shadow p-5 mx-auto" style="max-width: 360px;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} flash-message">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
         <h3 class="text-center ">Welcome back,Admin</h3>
 
@@ -48,16 +57,17 @@
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
-
+<br>
+       
 
             <button class="btn btn-dark w-100">Login</button>
             
-        </form>
+        
             <p class="text-center mt-3">
     don't have an account? 
-    <a href="/home" class="text-primary">Home</a>
+    <a href="/" class="text-primary">Home</a>
 </p>
-            
+           </form> 
         </div>
 
     </div>
