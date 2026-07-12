@@ -50,7 +50,16 @@
             background-position:center;
             background-repeat:no-repeat;
         ">
-
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} text-center">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
         <h2 class="fw-bold">
             <span class="bg-white text-dark px-4 py-2 rounded shadow">
                 Assigned Treks

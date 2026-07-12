@@ -24,7 +24,7 @@ class Staff(db.Model):
     staff_name = db.Column(db.String, nullable = False)
     contact_details=db.Column(db.String(15))
     
-    status=db.Column(db.String,default="Added" )
+    status=db.Column(db.String,default="Registered" )
     email = db.Column(db.String(100), unique=True,nullable = False)
     password = db.Column(db.String(100), nullable=False)
     is_added = db.Column(db.Boolean, default=False)

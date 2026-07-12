@@ -7,7 +7,35 @@
     <style>
      .body{
         background-color:linear-gra;
+         .alert {
 
+    animation: fadeout 5s forwards;
+
+}
+
+
+
+@keyframes fadeout {
+
+    0% {
+
+        opacity: 1;
+
+    }
+
+    80% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+    }
+
+}
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,6 +58,16 @@
 </nav>
 
 <div class="container mt-4">
+    
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} text-center">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
     <h2 class="text-center mb-4">
         Booking Records & Trekking History
@@ -50,7 +88,7 @@
     <tr>
         
         <td>{{ booking.trek.trek_name }}</td>
-        <td>{{ booking.booking_date }}</td>
+        <td>{{ booking.booking_date.strftime('%d-%m-%Y')}}</td>
         <td>{{ booking.status }}</td>
     </tr>
     {% endfor %}

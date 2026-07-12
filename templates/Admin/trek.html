@@ -21,8 +21,21 @@
         .card {
             border-radius: 10px;
         }
+        .alert {
+    animation: fadeout 5s forwards;
+}
 
-
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
     </style>
 </head>
 
@@ -43,7 +56,17 @@
 
 <div class="container mt-4">
 
-
+    
+    <!-- 🔹 FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <h2 class="mb-4 text-center"> Treks Management</h2>
     <h5 class="text-center">Create, update, and manage trekking routes, destinations, schedules, and trek details.</h5>
           <form class="d-flex justify-content-center mt-4" method="GET">

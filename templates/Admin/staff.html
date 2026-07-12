@@ -21,6 +21,23 @@
         .card {
             border-radius: 10px;
         }
+
+
+        .alert {
+    animation: fadeout 5s forwards;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
         
     </style>
 </head>
@@ -54,8 +71,18 @@
     >
 </form>
 
+
 <br>
-<br>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} text-center">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 <br>
 {% if search %}
 <div class="text-center mt-3">
@@ -66,26 +93,18 @@
 {% endif %}
 
 {% if search %}
+<div>
 <h2 class="mb-4">Search Results for "{{ search }}"</h2>
-{% else %}
-<div class="card border-0 rounded-4 text-white p-4"
-     style="background: linear-gradient(135deg,#43cea2,#185a9d);">
-    
-    <h3> Create New Staff</h3>
-    <p>Add a new staff to the platform.</p>
-
-    <a href="/admin/staff/create_staff"
-       class="btn btn-light">
-        Create Staff
-    </a>
 </div>
-<br>
-<br>
+{% else %}
+
+<div>
 <h2 class="mb-4">Available Staffs</h2>
+</div>
 {% endif %}
 
 <br>
-
+<div class="container">
     <div class="row">
 
         {% for s in staff %}
@@ -99,51 +118,49 @@
                 <p><strong>Email:</strong> {{ s.email }}</p>
                 <p><strong>Status:</strong> {{ s.status }}</p>
 
-            
                 {% if s.is_blacklisted %}
                     <span class="badge bg-danger">Blacklisted</span>
-                
                 {% else %}
-                    <span class="badge bg-success">Added</span>
+                    <span class="badge bg-warning">{{s.status}}</span>
                 {% endif %}
+
                 <br>
-            
+                <div class="d-flex justify-content-center gap-3">
 
+                    {% if not s.is_added %}
+                        approve new staff:
+                        <a href="/admin/staff/added/{{ s.staff_id }}"
+                           class="btn btn-success">
+                            Add
+                        </a>
 
-                <div class="d-flex justify-content-center gap-4">
+                    {% else %}
 
-                   
+                        <a href="/admin/staff/remove/{{ s.staff_id }}"
+                           class="btn btn-danger">
+                            Remove
+                        </a>
+                        {% if not s.is_blacklisted %}
+                        <a href="/admin/staff/blacklist/{{ s.staff_id }}"
+                           class="btn btn-dark">
+                            Blacklist
+                        </a>
+                        {% else %}
+                        <a href="/admin/staff/approve/{{ s.staff_id }}"
+                           class="btn btn-success">
+                            Approve
+                        </a>
+                            {% endif %}
+                    {% endif %}
 
-                    <a href="/admin/staff/remove/{{ s.staff_id }}" class="btn btn-danger btn-sm">
-                        Remove
-                    </a>
-                    
-                {% if s.is_blacklisted  %}
-
-                    <a href="/admin/staff/approve/{{ s.staff_id }}" class="btn btn-secondary btn-success">
-                        Approve
-                    </a>
-                
-                
-                {% else %}
-                
-                    <a href="/admin/staff/blacklist/{{ s.staff_id }}" class="btn btn-secondary btn-danger">
-                        Blacklist
-                    </a>
-                
-                
-                {% endif %}
-                    </div>
                 </div>
 
             </div>
 
-        
+        </div>
         {% endfor %}
 
     </div>
-
 </div>
-
 </body>
 </html>

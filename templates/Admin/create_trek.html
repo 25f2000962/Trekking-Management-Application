@@ -35,10 +35,22 @@
     background-position:center;
     background-repeat:no-repeat;
 ">
+
+
 <div class="d-flex justify-content-center">
     <div class="card " style="width:30rem">
         <div class="card-body">
-
+            
+    <!-- 🔹 FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
             <h5 class="card-title text-center">Create Trek</h5>
             
         

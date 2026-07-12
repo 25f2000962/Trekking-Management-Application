@@ -6,7 +6,11 @@
     <title>login</title>
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
+    <style>
+        body{
+            overflow: hidden;
+        }
+    </style>
     
 </head>
 <body>
@@ -31,9 +35,9 @@
     background-repeat:no-repeat;
 ">
      
-<div class="container mt-5">
+<div class="container mt-3">
 
-    <div class="card shadow p-5 mx-auto" style="max-width: 400px;">
+    <div class="card shadow p-4 mx-auto" style="max-width: 400px;">
 
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -60,14 +64,21 @@
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
-
+            <div class="mb-3">
+            <label>Select your role</label>
+            <select name="role" class="form-select" required>
+                
+                <option value="trekker">Trekker</option>
+                <option value="guide" >Guide</option>
+            </select>
+            </div>
 
             <button class="btn btn-dark w-100">Login</button>
             
         </form>
             <p class="text-center mt-3">
     don't have an account? 
-    <a href="/home" class="text-primary">Home</a>
+    <a href="/" class="text-primary">Home</a>
 </p>
             
         </div>

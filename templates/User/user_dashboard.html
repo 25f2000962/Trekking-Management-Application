@@ -13,6 +13,22 @@
         #fce7f3,
         #ede9fe,
         #dbeafe);}
+
+        .alert {
+    animation: fadeout 5s forwards;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 </style>
 </head>
 <body>
@@ -23,62 +39,141 @@
         <a href="/user/bookings" class="btn text-white">
             History
         </a>
-        <a href="/user/edit_profile/{{ user.user_id}}" class="btn text-white">
-            Edit Profile
+        
+        <a href="/" class="btn text-white">
+            Logout
         </a>
+    
     </div>
 
 </nav>
 
 
-    <div class="container-fluid d-flex justify-content-center align-items-center"
-    style="
-    height: 350px;;
-    background-image:url('/static/images/user_dashboard.jpg');
-    background-size:cover;
-    background-position:top center;
-    background-repeat:no-repeat;
-">
-     
-<div class="container mt-5">
-    <h1 class="text-center  fw-bold">
-        Let's get started!,<br>
-        {{ user.user_name }}
-    </h1>
-    <br>
-    <br>
-    <br>
-    <br>
-    <form method="GET" action="{{ url_for('user_dashboard') }}"
-      class="d-flex justify-content-center gap-2 mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
-    <select name="location" class="form-select w-25">
-        <option value="">All Locations</option>
+<div class="container-fluid py-3">
 
-        {% for loc in locations %}
-        <option value="{{ loc[0] }}"
-            {% if location == loc[0] %}selected{% endif %}>
-            {{ loc[0] }}
-        </option>
-        {% endfor %}
-    </select>
+    <div class="row g-3">
+<div class="col-lg-3">
 
-    <select name="difficulty" class="form-select w-25">
-    <option value="">All Difficulties</option>
-    <option value="Easy" {% if difficulty == "Easy" %}selected{% endif %}>Easy</option>
-    <option value="Moderate" {% if difficulty == "Moderate" %}selected{% endif %}>Moderate</option>
-    <option value="Hard" {% if difficulty == "Hard" %}selected{% endif %}>Hard</option>
-</select>
+    <div class="card shadow rounded-4 border-0">
 
-    <button type="submit" clAQass="btn btn-primary">
-        Search
-    </button>
+        <div class="card-body text-center p-4">
 
-</form>
+            <!-- Profile Icon -->
+            <i class="bi bi-person-circle display-1 text-primary"></i>
+
+            <h4 class="fw-bold mt-3 mb-1">
+                {{ user.user_name }}
+            </h4>
+
+            
+
+            <hr>
+<br>
+            <div class="text-start text-center">
+                <p class=" mb-2">
+                <strong>Email:</strong>  {{ user.email }}
+            </p>
+                <p class=" mb-2">
+                <strong>Contact:</strong>  {{ user.mobile}}
+            </p>
+
+
+                <p class="mb-2">
+                    <strong>Joined:</strong> {{ user.created_at.strftime('%d %b %Y') }}
+                </p>
+<br>
+            </div>
+
+            <a href="/user/edit_profile/{{ user.user_id}}"
+                           class="text-decoration-none">
+
+                            <div class="card border-0 shadow rounded-4 trek-card">
+
+                                <div class="card-body text-center text-white"
+                                     style="background:linear-gradient(135deg,#00b09b,#96c93d);">
+
+                                    <h5 class="fw-bold mt-3">
+                                        Edit Profile
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+        </div>
+
+    </div>
+
 </div>
+        <!-- Hero Banner -->
+        <div class="col-lg-9">
+
+            <div class="rounded-4 shadow d-flex flex-column justify-content-center p-5"
+                 style="
+                    height:350px;
+                    background-image:url('/static/images/user_dashboard.jpg');
+                    background-size:cover;
+                    background-position:top;
+                    background-repeat:no-repeat;
+                 ">
+
+                <h1 class="fw-bold text-dark text-center">
+                    Let's get started!<br>
+                    {{ user.user_name }}
+                </h1>
+
+                <form method="GET"
+                      action="{{ url_for('user_dashboard') }}"
+                      class="row g-3 mt-5">
+                    <br>
+                    <div class="col-md-4">
+                        <select name="location" class="form-select">
+                            <option value="">All Locations</option>
+                            {% for loc in locations %}
+                            <option value="{{ loc[0] }}" {% if location==loc[0] %}selected{% endif %}>
+                                {{ loc[0] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <select name="difficulty" class="form-select">
+                            <option value="">All Difficulties</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">
+                            Search
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 <br>
-{% if location or trek_date %}
+{% if location or difficulty %}
 <div class="text-center mt-3">
     <a href="{{ url_for('user_dashboard') }}"
        class="btn btn-secondary">
@@ -87,7 +182,7 @@
 </div>
 {% endif %}
 
-{% if location or trek_date %}
+{% if location or difficulty %}
 <h2 class="mb-4 text-center">
     Search Results
 </h2>
@@ -96,11 +191,10 @@
     AVAILABLE TREKS
 </h2>
 {% endif %}
-
-<br>
 <br>
 
 
+<div class="container my-5">
     <div class="row">
         {%if treks %}
         {% for trek in treks  %}
@@ -142,6 +236,6 @@
     </div>
 
 </div>
-
+</div>
 </body>
 </html>

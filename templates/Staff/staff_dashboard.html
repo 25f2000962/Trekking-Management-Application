@@ -22,6 +22,21 @@
     .sidebar-card{
     height: calc(100vh - 85px);
 }
+.alert {
+    animation: fadeout 5s forwards;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 </style>
 <body class="bg-light">
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
@@ -35,7 +50,18 @@
     </div>
 
 </nav>
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+                    {{ message }}
+                    
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
 <div class="container-fluid py-3">
 

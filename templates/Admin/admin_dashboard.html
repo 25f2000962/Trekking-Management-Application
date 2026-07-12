@@ -15,7 +15,21 @@
 
         };
 
+        .alert {
+    animation: fadeout 5s forwards;
+}
 
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
     </style>
 </head>
 
@@ -87,7 +101,7 @@
     <div class="row text-center mb-5">
 
        <div class="col-md-3">
-    <div class="card shadow p-3 h-80">
+    <div class="card shadow p-1 h-80">
         <img src="{{ url_for('static', filename='images/Screenshot 2026-06-04 022447.png') }}"
              class="card-img-top"
              style="height:120px; object-fit:contain;">
@@ -105,7 +119,7 @@
     </div>
 </div>
 <div class="col-md-3">
-    <div class="card shadow p-3 h-80">
+    <div class="card shadow p-1 h-80">
         <img src="{{ url_for('static', filename='images/guide.png') }}"
              class="card-img-top"
              style="height:120px; object-fit:contain;">
@@ -123,7 +137,7 @@
     </div>
 </div>
         <div class="col-md-3">
-            <div class="card shadow p-3 h-80">
+            <div class="card shadow p-1 h-80">
                 <img src="{{ url_for('static', filename='images/mountain.png') }}"
      class="card-img-top"
      style="height:120px; object-fit:contain;">
@@ -142,7 +156,7 @@
     
 
         <div class="col-md-3">
-            <div class="card shadow p-3 h-80">
+            <div class="card shadow p-1 h-80">
                 <img src="{{ url_for('static', filename='images/booking2.png') }}"
      class="card-img-top"
      style="height:120px; object-fit:contain;">
